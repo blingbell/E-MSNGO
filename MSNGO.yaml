@@ -1,0 +1,15 @@
+
+model_dir: ./MSNGO_models/
+
+n_mlp_layers: 1
+n_prop_steps: 2  
+batch_size: 40
+mlp_dropout: 0.5
+n_hidden: 512
+residual: True
+share_weight: True
+
+alphas:
+  bp: 0.2
+  mf: 0.4
+  cc: 0.5
