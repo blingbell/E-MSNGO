@@ -32,11 +32,14 @@ python predict.py --ontology mf -f your_test.fasta
 
 ## Train
 preprocessing.sh is for processing your raw data. 
+
 If you want to train on your own dataset, please read [here](data/readme.md). and download esm2_t33_650M_UR50D.pt to MSNGO/esm2_t33_650M_UR50D/
+
 Then run the following command, but it may take a long time.
 ```
 ./scripts/preprocessing.sh
 ```
+
 The mf, bp, and cc branches will be trained, predicted, and evaluated by the following files respectively.
 ```
 ./scripts/run_mf.sh
