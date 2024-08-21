@@ -4,7 +4,7 @@ This is the code repository for protein function prediction model MSNGO.
 
 **MSNGO** is a a multi-species protein function prediction model based on structural features and heterogeneous network propagation, which provides a structure encoder and can propagate structural feature on heterogeneous network for predicting Gene Ontology terms.
 
-<div align=center><img width="400" alt="network" src="https://user-images.githubusercontent.com/34743589/168456432-0fb12024-9997-4cdc-894d-966c4cf15328.png"></div>
+<div align=center><img width="800" alt="overview" src="https://github.com/blingbell/MSNGO/blob/master/images/overview.png"></div>
 
 ## Dependencies
 * The code was developed and tested using python 3.8.
