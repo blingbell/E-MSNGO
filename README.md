@@ -22,7 +22,7 @@ The data used are:
 * Gene Ontology: download from the [GO website](http://geneontology.org/).
 * ALphaFlod structure: download from the [AlphaFold website](https://alphafold.com/).
 
-We also provide a small dataset which has less than 50 proteins to quickly test the model.It can be found in [here](data/readme.md).
+We also provide a small dataset which has less than 50 proteins to quickly test the model. It can be found [here](data/readme.md).
 
 For a detailed description of data files, please see [here](data/readme.md).
 
