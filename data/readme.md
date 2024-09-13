@@ -8,7 +8,9 @@ Here you can quickly test the model by the testdata.
 
 We provide less than 50 proteins, and then you can simply run preprocessing.sh and training steps by setting {datapath} to testdata. This still takes several minutes.
 
-If you don't want to download 
+* Structual feature is saved to testdata/emb_graph_bp[/mf/cc].npy
+* Sequence feature is saved to testdata/esm_feature.npy
+If you don't want to download esm2_t33_650M_UR50D, you can use 
 
 **Your Dataset**
 
