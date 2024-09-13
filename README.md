@@ -20,7 +20,7 @@ The data used are:
 * PPI Network: download from the [STRING website](https://string-db.org/).
 * Annotation: download from the [GOA website](https://www.ebi.ac.uk/GOA/).
 * Gene Ontology: download from the [GO website](http://geneontology.org/).
-* ALphaFlod structure: download from the [AlphaFold website](https://alphafold.com/).
+* AlphaFold structure: download from the [AlphaFold website](https://alphafold.com/).
 
 We also provide a small dataset which has less than 50 proteins to quickly test the model. It can be found [here](data/readme.md).
 
