@@ -56,7 +56,7 @@ def divide_dataset(ont:str, datapath:str, go_list):
     valid_pids = np.loadtxt(f'{datapath}/{ont}/{ont}_valid_pids.txt', dtype=str)
     test_pids = np.loadtxt(f'{datapath}/{ont}/{ont}_test_pids.txt', dtype=str)
     logger.info('load pids done')
-    struct_emb = np.load(f'/home/wangbb/mycode/dataset/emb_graph_{ont}.npy', allow_pickle=True).item()
+    struct_emb = np.load(f'{datapath}/emb_graph_{ont}.npy', allow_pickle=True).item()
     logger.info('load struct emb done')
 
     train_struct_emb = {}

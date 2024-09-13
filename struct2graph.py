@@ -275,12 +275,12 @@ def get_structmap(path, file_name, map_path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Data preprocessing')
     parser.add_argument("-d", "--datapath", type=str, default='data', help="path to save data")
-    parser.add_argument("-p", "--outpath", type=str, default='data/structmap', help="path to save contact map data")
+    parser.add_argument("-p", "--mapdir", type=str, default='structmap', help="path to save contact map data")
     
     args = parser.parse_args()
     logger.info(args)
     datapath = args.datapath
-    outpath = args.outpath
+    outpath = f'{datapath}/{args.mapdir}'
     if not os.path.exists(outpath):
         os.mkdir(outpath)
         
@@ -290,14 +290,13 @@ if __name__ == '__main__':
     # convert raw structural data into contact maps
     # file_name = "AF-A0A0A7EPL0-F1-model_v4.pdb"
     files = [file for file in os.listdir(f'{datapath}/structdata')]
-    map_names = [file.split('.')[0] for file in os.listdir(f'{datapath}/structmap')]
+    map_names = [file.split('.')[0] for file in os.listdir(outpath)]
     for file in tqdm(files, desc=f"struct to map"):
         if file.endswith(".pdb"):
             name = file.split("-")[1]
             if name in map_names:
                 continue
             if name in uniprot2string and uniprot2string[name] in ppi_pid2index:
-                print(file)
                 get_structmap(f'{datapath}/structdata', file, outpath)
                 map_names.append(name)
                 # get_structmap(f'data/structdata', file, outpath)

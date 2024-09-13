@@ -10,7 +10,7 @@ from Bio import SeqIO
 import pandas as pd
 
 TAXIDS = ['3702', '4577', '284812', '559292', '6239', '7227', '7955', '9606', '10090', '10116', '44689', '83333', '71421']
-
+TAXIDS_test = ['3702','7955','9606','10090']
 def get_mlb(mlb_path, classes = None, **kwargs) -> MultiLabelBinarizer:
     if os.path.exists(mlb_path):
         return joblib.load(mlb_path)
@@ -85,7 +85,10 @@ def readdata_mapid(filepath:str):
 def get_uniprot2string(datapath:str):
     if not os.path.exists(f"{datapath}/uniprot2string.txt"):
         uniprot2string={}
-        for tax in TAXIDS:
+        spieces = TAXIDS
+        if 'testdata' in datapath:
+            spieces = TAXIDS_test
+        for tax in spieces:
             string_ids = readdata_ppi(f'{datapath}/PPIdata/{tax}.protein.links.v11.0.txt')
             string2uniprot = readdata_mapid(f'{datapath}/IDmap-uniprot-string/uniprotkb_{tax}.xlsx')
             stringkeys = string2uniprot.keys()

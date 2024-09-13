@@ -56,7 +56,10 @@ def download_alphafold_structure(
 
 def get_goa_spiece(datapath:str):
     all_data = {}
-    for id in TAXIDS:
+    spieces = TAXIDS
+    if 'testdata' in datapath:
+        spieces = TAXIDS_test
+    for id in spieces:
         all_data[id]=[]
     f = open(f"{datapath}/GO/goa_uniprot_all.gaf","r")
     line = f.readline()
@@ -67,7 +70,7 @@ def get_goa_spiece(datapath:str):
         data = line.strip().split('\t')
         taxon = data[12].strip().split(':')[1]
         eid = data[6]
-        if taxon in TAXIDS and eid in EXP_CODES:
+        if taxon in spieces and eid in EXP_CODES:
             all_data[taxon].append({'PID':f'{data[1]}', 'GO':f'{data[4]}', 'EID':f'{eid}', 'taxon':f'{taxon}', 'aspect':f'{data[8]}', 'time':f'{data[13]}'})
             # print(f'PID:{data[1]}, GO:{data[4]}, EID:{eid}, taxon:{taxon}, aspect:{data[8]}, time:{data[13]}')
         line = f.readline()
@@ -86,6 +89,10 @@ def get_dataset(datapath:str):
     filename = f'{datapath}/GO/goa'
     go_file = f'{datapath}/GO/go.obo'
 
+    spieces = TAXIDS
+    if 'testdata' in datapath:
+        spieces = TAXIDS_test
+        
     onts = ['bp', 'mf', 'cc']
     cate = ['train', 'valid', 'test']
     data_set = dict()
@@ -97,7 +104,7 @@ def get_dataset(datapath:str):
             data_set[o][c] = defaultdict(set)
 
     data_size_orgs = dict()  # statistic dataset size (train, valid, test)
-    for i in list(TAXIDS):
+    for i in list(spieces):
         data_size_orgs[i] = dict()
         for o in onts:
             data_size_orgs[i][o] = dict()
@@ -109,7 +116,8 @@ def get_dataset(datapath:str):
     # get goa annotations
     # one example line of the file： 
     # {"PID": "P54144", "GO": "GO:0043621", "EID": "IDA", "taxon": "3702", "aspect": "F", "time": "20170329"}
-    for target in TAXIDS:
+    
+    for target in spieces:
         with open(f'{filename}_{target}.json', 'r') as f:
             for line in tqdm(f.readlines(), desc=f'Reading {target} annotations......'):
                 line = json.loads(line)
@@ -172,10 +180,11 @@ def get_dataset(datapath:str):
 
     # preprocess protein sequence, save to .fasta
     seqs = {}
-    for tax in list(TAXIDS):
-        for record in SeqIO.parse(f'{datapath}/sequence/uniprotkb_{tax}.fasta', 'fasta'):
-            pid = str(record.id).split('|')[1]
-            seqs[pid] = record.seq
+    for tax in list(spieces):
+        if os.path.exists(f'{datapath}/sequence/uniprotkb_{tax}.fasta'):
+            for record in SeqIO.parse(f'{datapath}/sequence/uniprotkb_{tax}.fasta', 'fasta'):
+                pid = str(record.id).split('|')[1]
+                seqs[pid] = record.seq
 
     logger.info('preprocess seqs.')
 
@@ -226,7 +235,7 @@ def get_dataset(datapath:str):
         os.mkdir(f'{datapath}/structdata')
     for pid in tqdm(network_seqs, desc = 'download Structures'):
         flag = download_alphafold_structure(pid, f'{datapath}/structdata')
-        if flag == None:
+        if flag == None or os.path.getsize(f'{datapath}/structdata/AF-{pid.upper()}-F1-model_v4.pdb') < 100:
             # esm-fold predict structure
             os.system(f'curl -X POST --data "{str(network_seqs[pid].seq).replace("U", "X")[:400]}" https://api.esmatlas.com/foldSequence/v1/pdb/ > {datapath}/structdata/AF-{str(pid).upper()}-F1-model_v4.pdb -k')
 
@@ -260,7 +269,7 @@ def get_dataset(datapath:str):
             for c in cate:
                 f.write('\t' + c + ' set: ' + str( len(data_set[o][c]) ) +'\n')
         f.write('\n')
-        for i in list(TAXIDS):
+        for i in list(spieces):
             f.write(str(i)+'\n')
             for o in onts:
                 f.write('\t' + str(o) + '\n')
@@ -318,7 +327,10 @@ def get_ppi_mat(datapath:str):
     u_list = []
     v_list = []
     weight = []
-    for tax in tqdm(TAXIDS, desc='Reading all spieces ppi link file......'):
+    spieces = TAXIDS
+    if 'testdata' in datapath:
+        spieces = TAXIDS_test
+    for tax in tqdm(spieces, desc='Reading all spieces ppi link file......'):
         with open(f'{datapath}/PPIdata/{tax}.protein.links.v11.0.txt', 'r') as f:
             lines = f.readlines()
             for line in lines:
@@ -358,7 +370,10 @@ def build_hetero_network(ppi_top: int, datapath:str):
             sim_u.append(u)
             sim_v.append(v)
             sim_weight.append(w)
-    sim_norm_mat = get_norm_mat(csr_matrix((sim_weight, (sim_u, sim_v)), shape=sim_csr_mat.shape)).tocoo()
+    if 'testdata' in datapath:
+        sim_norm_mat = csr_matrix((sim_weight, (sim_u, sim_v)), shape=sim_csr_mat.shape).tocoo()
+    else:
+        sim_norm_mat = get_norm_mat(csr_matrix((sim_weight, (sim_u, sim_v)), shape=sim_csr_mat.shape)).tocoo()
     sim_edge_u = list()
     sim_edge_v = list()
     sim_edge_weight = list()
@@ -376,7 +391,10 @@ def build_hetero_network(ppi_top: int, datapath:str):
             ppi_top_u.append(u)
             ppi_top_v.append(v)
             ppi_top_w.append(w)
-    ppi_norm_mat = get_norm_mat(csr_matrix((ppi_top_w, (ppi_top_u, ppi_top_v)), shape=ppi_csr_mat.shape)).tocoo()
+    if 'testdata' in datapath:
+        ppi_norm_mat = csr_matrix((ppi_top_w, (ppi_top_u, ppi_top_v)), shape=ppi_csr_mat.shape).tocoo()
+    else:        
+        ppi_norm_mat = get_norm_mat(csr_matrix((ppi_top_w, (ppi_top_u, ppi_top_v)), shape=ppi_csr_mat.shape)).tocoo()
     ppi_edge_u = list()
     ppi_edge_v = list()
     ppi_edge_weight = list()

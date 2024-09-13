@@ -24,18 +24,13 @@ The data used are:
 
 For a detailed description of data files, please see [here](data/readme.md).
 
-## Predict
-Run the `predict.py` script to make predictions about the input file (e.g. for MFO):
-```
-python predict.py --ontology mf -f your_test.fasta
-```
 
 ## Train
 preprocessing.sh is for processing your raw data. 
 
-If you want to train on your own dataset, please read [here](data/readme.md). and download esm2_t33_650M_UR50D.pt to MSNGO/esm2_t33_650M_UR50D/
+Read [here](data/readme.md) to get a quick start. and If you want to train on your own dataset, please download [esm2_t33_650M_UR50D.pt](https://github.com/facebookresearch/esm?tab=readme-ov-file#esmfold) to MSNGO/esm2_t33_650M_UR50D/
 
-Then run the following command, but it may take a long time.
+Then run the following command, it can process raw data.
 ```
 ./scripts/preprocessing.sh
 ```
@@ -45,5 +40,14 @@ The mf, bp, and cc branches will be trained, predicted, and evaluated by the fol
 ./scripts/run_mf.sh
 ./scripts/run_bp.sh
 ./scripts/run_cc.sh
+```
+
+## Predict
+
+Our trained model can be downloaded from [here](https://drive.google.com/file/d/1fRZYmTlPFmb6rmMSS87HoqACVm5YsNNR/view?usp=drive_link). 
+
+You can use the model directly to get predictions. Run the `predict.py` script to make predictions about the input file (e.g. for MFO):
+```
+python predict.py --ontology mf -f your_test.fasta
 ```
 

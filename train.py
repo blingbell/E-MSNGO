@@ -113,8 +113,8 @@ def main(args):
     logger.info(F"Number of train index: {len(train_idx)}, valid index: {len(valid_idx)}.")
     
     logger.info('Get feature matrix.')
-    struct_feature_matrix = np.load(f'/home/wangbb/mycode/dataset/sag_struct_feature_{ont}.npy')
-    seq_feature_matrix = np.load(f'/home/wangbb/mycode/dataset/esm_feature.npy')
+    struct_feature_matrix = np.load(f'{data_dir}/sag_struct_feature_{ont}.npy')
+    seq_feature_matrix = np.load(f'{data_dir}/esm_feature.npy')
     logger.info(F'Shape of seq feature matrix: {seq_feature_matrix.shape}')
     logger.info(F'Shape of struct feature matrix: {struct_feature_matrix.shape}')
 
