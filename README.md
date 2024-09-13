@@ -26,9 +26,10 @@ For a detailed description of data files, please see [here](data/readme.md).
 
 
 ## Train
-preprocessing.sh is for processing your raw data. 
 
 Read [here](data/readme.md) to get a quick start. and If you want to train on your own dataset, please download [esm2_t33_650M_UR50D.pt](https://github.com/facebookresearch/esm?tab=readme-ov-file#esmfold) to MSNGO/esm2_t33_650M_UR50D/
+
+Preprocessing.sh is for processing your raw data. 
 
 Then run the following command, it can process raw data.
 ```
