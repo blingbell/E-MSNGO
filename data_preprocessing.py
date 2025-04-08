@@ -417,6 +417,7 @@ def build_hetero_network(ppi_top: int, datapath:str):
     return
 
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Data preprocessing')
     parser.add_argument("-d", "--datapath", type=str, default='data',  help="path to save data")

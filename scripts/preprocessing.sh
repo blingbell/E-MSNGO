@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 python data_preprocessing.py
+python function_sim.py -o mf
+python function_sim.py -o bp
+python function_sim.py -o cc
 python seq_embedding.py -m ./esm2_t33_650M_UR50D/esm2_t33_650M_UR50D.pt
 python struct2graph.py
 python struct_embedding.py -ont mf -m ./structmodel

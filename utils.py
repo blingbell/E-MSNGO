@@ -29,6 +29,16 @@ def get_pid_list(file_path):
         pid_list.append(record.id)
     return pid_list
     
+def get_tax_pid_label_dict(file_path):
+    label_dict = dict()
+    with open(file_path, 'r') as f:
+        for line in f:
+            line = line.strip().split('\t')
+            if label_dict.get(line[3]) == None:
+                label_dict[line[3]] = defaultdict(set)
+            label_dict[line[3]][line[0]].add(line[1]) 
+
+    return label_dict
 
 def get_pid_and_label_list(file_path):
     pid_list, label_list = list(), list()

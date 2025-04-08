@@ -16,11 +16,11 @@ def main(args):
     data_dir = args.datapath
     result_dir = args.result_dir
     ont = args.ontology
-
+    alpha = args.alpha
     uniprot2string = get_uniprot2string(data_dir)
     pid2index = get_ppi_pid2index(data_dir)
 
-    dgl_path = F'{data_dir}/dgl_hetero'
+    dgl_path = F'{data_dir}/dgl_hetero_{ont}_{alpha}'
     g = dgl.load_graphs(dgl_path)[0][0]
 
     train_pid_list, train_label_list = get_pid_and_label_list(f'{data_dir}/{ont}/{ont}_train_go.txt')
@@ -113,6 +113,8 @@ if __name__ == '__main__':
                         help="gpu")
     parser.add_argument("--model_dir", type=str, default='./MSNGO_models',
                         help='path for save the model parameters')
+    parser.add_argument("-a","--alpha", type=float, default=0.5,
+                        help="choose dgl graph")
     parser.add_argument("-f", "--input_file", type=str, default=None,
                         help="The fasta file path of the protein that needs to be predicted.")
     parser.add_argument("-r", "--result_dir", type=str, default='result',

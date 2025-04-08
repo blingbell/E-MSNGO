@@ -84,13 +84,13 @@ def train(args, dataset):
 def main(args):
     data_dir = args.datapath
     ont = args.ontology
-
+    alpha = args.alpha
     logger.info("Start loading data.")
 
     uniprot2string = get_uniprot2string(data_dir)
     pid2index = get_ppi_pid2index(data_dir)
 
-    dgl_path = F'{data_dir}/dgl_hetero'
+    dgl_path = F'{data_dir}/dgl_hetero_{ont}_{alpha}'
     logger.info(F"Loading dgl graph: {dgl_path}......")
     g = dgl.load_graphs(dgl_path)[0][0]
     logger.info(F"The info of the heterogeneous network: {g}")
@@ -152,10 +152,12 @@ if __name__ == '__main__':
     parser.add_argument("--gpu", type=int, default=0, help="gpu")
     parser.add_argument("--n_mlp_layers", type=int, default=1)
     parser.add_argument("--n_prop_steps", type=int, default=2)
-    parser.add_argument("-e", "--n_epochs", type=int, default=10,
+    parser.add_argument("-e", "--n_epochs", type=int, default=20,
                         help="number of training epochs")
     parser.add_argument("-b", "--batch_size", type=int, default=40,
                         help="Mini-batch size. If -1, use full graph training.")
+    parser.add_argument("-a","--alpha", type=float, default=0.5,
+                        help="choose dgl graph")
     parser.add_argument("--mlp_dropout", type=float, default=0.5,
                         help="mlp dropout probability")
     parser.add_argument("--lr", type=float, default=1e-3,
@@ -164,7 +166,7 @@ if __name__ == '__main__':
                         help="hidden size")
     parser.add_argument("--residual", type=bool, default=True,
                         help="whether to make residual connection")
-    parser.add_argument("--share_weight", type=bool, default=True,
+    parser.add_argument("--share_weight", type=bool, default=False,
                         help="whether parameters are shared between different types of networks")
     
     parser.add_argument("--model_id", type=str, default='0')

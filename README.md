@@ -4,7 +4,7 @@ This is the code repository for protein function prediction model MSNGO.
 
 **MSNGO** is a a multi-species protein function prediction model based on structural features and heterogeneous network propagation, which provides a structure encoder and can propagate structural feature on heterogeneous network for predicting Gene Ontology terms.
 
-<div align=center><img width="800" alt="overview" src="https://github.com/blingbell/MSNGO/blob/master/images/overview.jpg"></div>
+<div align=center><img width="800" alt="overview" src="https://github.com/blingbell/E-MSNGO/blob/master/images/overview.jpg"></div>
 
 ## Dependencies
 * The code was developed and tested using python 3.8.
@@ -12,7 +12,7 @@ This is the code repository for protein function prediction model MSNGO.
 * The version of CUDA is `cudatoolkit==11.3.1`
 
 ## Data
-<div align=center><img width="147" alt="uniprot" src="https://github.com/blingbell/MSNGO/blob/master/images/uniprot.jpg"><img width="175" alt="string" src="https://github.com/blingbell/MSNGO/blob/master/images/string.png"><img width="143" alt="goa" src="https://github.com/blingbell/MSNGO/blob/master/images/goa.png"><img width="206" alt="go" src="https://github.com/blingbell/MSNGO/blob/master/images/go.png"><img width="280" alt="alphafold" src="https://github.com/blingbell/MSNGO/blob/master/images/1724076793413.jpg"></div>
+<div align=center><img width="147" alt="uniprot" src="https://github.com/blingbell/E-MSNGO/blob/master/images/uniprot.jpg"><img width="175" alt="string" src="https://github.com/blingbell/E-MSNGO/blob/master/images/string.png"><img width="143" alt="goa" src="https://github.com/blingbell/E-MSNGO/blob/master/images/goa.png"><img width="206" alt="go" src="https://github.com/blingbell/E-MSNGO/blob/master/images/go.png"><img width="280" alt="alphafold" src="https://github.com/blingbell/E-MSNGO/blob/master/images/1724076793413.jpg"></div>
 
 \
 The data used are:
@@ -47,10 +47,16 @@ The mf, bp, and cc branches will be trained, predicted, and evaluated by the fol
 
 ## Predict
 
-Our trained model can be downloaded from [here](https://drive.google.com/file/d/1fRZYmTlPFmb6rmMSS87HoqACVm5YsNNR/view?usp=drive_link). 
+Our trained model can be downloaded from [here](https://drive.google.com/file/d/1Aa0MScR-3ORahkr45gfW8z77MH_AfHEC/view?usp=sharing). 
 
 You can use the model directly to get predictions. Run the `predict.py` script to make predictions about the input file (e.g. for MFO):
 ```
-python predict.py --ontology mf -f your_test.fasta
+python predict.py --o mf -f your_test.fasta
+```
+
+## Explain
+
+```
+python MSNGO_explain.py -o mf -f your_test.fasta -n 10 --result_dir explain_result
 ```
 
