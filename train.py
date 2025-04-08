@@ -78,7 +78,7 @@ def train(args, dataset):
         if fmax_ > best_fmax:
             logger.info(F'improved from {best_fmax} to {fmax_}, save model to {args.model_dir} {args.model_id}.')
             best_fmax = fmax_
-            torch.save(model.state_dict(), os.path.join(args.model_dir, F"MSNGO_{args.ontology}_{args.model_id}.ckp"))
+            torch.save(model.state_dict(), os.path.join(args.model_dir, F"E-MSNGO_{args.ontology}_{args.model_id}.ckp"))
 
 
 def main(args):
@@ -146,7 +146,7 @@ def main(args):
     
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='train MSNGO model.')
+    parser = argparse.ArgumentParser(description='train E-MSNGO model.')
     parser.add_argument("-d","--datapath", type=str, default="data")
     parser.add_argument("--ontology", type=str, default="mf")
     parser.add_argument("--gpu", type=int, default=0, help="gpu")

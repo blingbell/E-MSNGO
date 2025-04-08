@@ -82,7 +82,7 @@ def main(args):
     model = MSNGO(seq_feature_matrix.shape[1]+struct_feature_matrix.shape[1], model_config['n_hidden'], label_matrix.shape[1],
             model_config['n_mlp_layers'], model_config['n_prop_steps'], mlp_drop=model_config['mlp_dropout'],
             residual=model_config['residual'], share_weight=model_config['share_weight']).to(device)
-    model.load_state_dict(torch.load(os.path.join(args.model_dir, F'MSNGO_{args.ontology}_{args.model_id}.ckp'))) 
+    model.load_state_dict(torch.load(os.path.join(args.model_dir, F'E-MSNGO_{args.ontology}_{args.model_id}.ckp'))) 
     pred_x_score_list, pred_y_score_list = model.inference(g, pred_index, seq_feature_matrix, struct_feature_matrix, label_matrix, model_config['batch_size'], device)
 
     alpha = model_config['alphas'][ont]
@@ -108,7 +108,7 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Prediction.')
     parser.add_argument("-d","--datapath", type=str, default="data")
-    parser.add_argument("--ontology", type=str, default="bp")
+    parser.add_argument("-o","--ontology", type=str, default="bp")
     parser.add_argument("--gpu", type=int, default=0,
                         help="gpu")
     parser.add_argument("--model_dir", type=str, default='./MSNGO_models',
@@ -124,6 +124,7 @@ if __name__ == '__main__':
     logger.info("Running the MSNGO model for prediction.")
     logger.info(F"Ontology: {args.ontology}")
     logger.info(F"GPU: {args.gpu}")
+    logger.info(F"alpha: {args.alpha}")
     logger.info(F"Results in : {args.result_dir}")
     logger.info(F"The input FASTA file path: {args.input_file}")
     main(args)

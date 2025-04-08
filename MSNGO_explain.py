@@ -195,7 +195,7 @@ def main(args):
     model = MSNGO(seq_feature_matrix.shape[1]+struct_feature_matrix.shape[1], model_config['n_hidden'], label_matrix.shape[1],
             model_config['n_mlp_layers'], model_config['n_prop_steps'], mlp_drop=model_config['mlp_dropout'],
             residual=model_config['residual'], share_weight=False).to(device)
-    model.load_state_dict(torch.load(os.path.join(args.model_dir, F'MSNGO_{ont}_{args.model_id}_{alpha}.ckp'))) 
+    model.load_state_dict(torch.load(os.path.join(args.model_dir, F'E-MSNGO_{ont}_{args.model_id}.ckp'))) 
     
     testid = np.unique(pred_index)
     testid = testid.astype(np.int32)
@@ -209,14 +209,14 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Explainer.')
     parser.add_argument("-d","--datapath", type=str, default="data")
-    parser.add_argument("--ontology", type=str, default="mf")
+    parser.add_argument("-o","--ontology", type=str, default="mf")
     parser.add_argument("--gpu", type=int, default=0, help="gpu")
     parser.add_argument("-a","--alpha", type=float, default=0.5,
                         help="choose dgl graph")
     parser.add_argument("-n","--num_nodes", type=float, default=50,
                         help="The number of nodes (randomly choosed) to explain")
     parser.add_argument("--label", type=bool, default=False,
-                        help="False for test ids, True for train and valid ids. ")
+                        help="label propagation: False for test ids, True for train and valid ids. ")
     parser.add_argument("--model_dir", type=str, default='./MSNGO_models',
                         help='path for save the model parameters')
     parser.add_argument("--model_id", type=str, default='0')
