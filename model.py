@@ -13,7 +13,7 @@ import numpy as np
 
 class MSNGO(nn.Module): 
     def __init__(self, in_dim, h_dim, out_dim, n_hidden_layer, n_prop_step, mlp_drop=0.0,
-                 attn_heads=1, feat_drop=0.0, attn_drop=0.0, residual=True, share_weight=True):
+                 attn_heads=1, feat_drop=0.0, attn_drop=0.0, residual=True, share_weight=False):
         super(MSNGO, self).__init__()
         self.n_prop_step = n_prop_step
         self.dropout = mlp_drop
@@ -187,7 +187,7 @@ class GraphAttention(nn.Module):
             e = self.leaky_relu(graph.edata.pop('e')) # (num_src_edge, num_heads, out_dim)
             e = (e * self.attn).sum(dim=-1).unsqueeze(dim=2) # (num_edge, num_heads, 1)
             # compute softmax
-            graph.edata['a'] = self.attn_drop(edge_softmax(graph, e)) # (num_edge, num_heads)
+            graph.edata['a'] = self.attn_drop(edge_softmax(graph, e)) # (num_edge, num_heads,1)
             # feature propagation
             graph.update_all(fn.u_mul_e('el', 'a', 'm'),
                              fn.sum('m', 'ft'))

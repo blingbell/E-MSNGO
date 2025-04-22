@@ -7,7 +7,7 @@ batch_size: 40
 mlp_dropout: 0.5
 n_hidden: 512
 residual: True
-share_weight: True
+share_weight: False
 
 alphas:
   bp: 0.2
